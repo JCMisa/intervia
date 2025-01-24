@@ -1,8 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const TooFastRequestPage = () => {
+  const router = useRouter();
+
   const [secondsRemaining, setSecondsRemaining] = useState(60);
 
   useEffect(() => {
@@ -25,13 +29,22 @@ const TooFastRequestPage = () => {
         temporary pause on your excitement. 🚦 Chill for a bit, and try again
         shortly
       </p>
-      <p className="mt-5 text-gray-500 dark:text-gray-400">
-        Retry after:{" "}
-        <span className="font-bold text-dark dark:text-light">
-          {secondsRemaining}
-        </span>{" "}
-        seconds
-      </p>
+      {secondsRemaining !== 0 ? (
+        <p className="mt-5 text-gray-500 dark:text-gray-400">
+          Retry after:{" "}
+          <span className="font-bold text-dark dark:text-light">
+            {secondsRemaining}
+          </span>{" "}
+          seconds
+        </p>
+      ) : (
+        <Button
+          onClick={() => router.back()}
+          className="mt-5 min-w-32 max-w-32"
+        >
+          Go Back
+        </Button>
+      )}
     </main>
   );
 };
