@@ -5,12 +5,19 @@ import { users } from "@/database/schema";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import moment from "moment";
+import { headers } from "next/headers";
+import ratelimit from "../ratelimit";
+import { redirect } from "next/navigation";
 
 export const syncUser = async () => {
   const { userId } = await auth();
   const user = await currentUser();
 
   if (!userId || !user) return { success: false, error: "No user found" };
+
+  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
+  const { success } = await ratelimit.limit(ip);
+  if (!success) return redirect("/too-fast");
 
   try {
     const existingUser = await db
