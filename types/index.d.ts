@@ -21,3 +21,21 @@ declare type FormDataType = {
   keyCompetencies: string;
   education: string;
 };
+
+declare type InterviewData = {
+  jobTitle: string;
+  industry: string;
+  jobDescription: string;
+  skills: string;
+  experienceLevel: string;
+  keyCompetencies: string;
+  education: string;
+  questionsList: [
+    {
+      question: string;
+      answer: string;
+      explanation: string;
+      options: string[];
+    }
+  ];
+};

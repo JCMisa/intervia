@@ -6,6 +6,7 @@ import {
   pgEnum,
   boolean,
   integer,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
 export const ROLE_ENUM = pgEnum("role", ["USER", "ADMIN"]);
@@ -21,5 +22,23 @@ export const users = pgTable("users", {
   isPro: boolean("isPro").default(false),
   stripeConnectId: varchar("stripeConnectId"),
   credits: integer("credits").default(0),
+  createdAt: varchar("createdAt"),
+});
+
+export const interviews = pgTable("interviews", {
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  interviewId: varchar("interviewId").notNull().unique(),
+  userId: uuid("userId")
+    .references(() => users.id)
+    .notNull(),
+  createdBy: varchar("createdBy"),
+  jobTitle: varchar("jobTitle"),
+  industry: varchar("industry"),
+  jobDescription: text("jobDescription"),
+  skills: text("skills"),
+  experienceLevel: varchar("experienceLevel"),
+  keyCompetencies: text("keyCompetencies"),
+  education: varchar("education"),
+  interviewData: jsonb("interviewData"),
   createdAt: varchar("createdAt"),
 });

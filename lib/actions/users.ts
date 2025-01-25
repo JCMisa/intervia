@@ -54,7 +54,7 @@ export const getCurrentUser = async () => {
   const { userId } = await auth();
   const user = await currentUser();
 
-  if (!userId || !user) return { success: false, error: "No user found" };
+  if (!userId || !user) return { success: false, error: "Unauthenticated" };
 
   try {
     const data = await db.select().from(users).where(eq(users.userId, userId));

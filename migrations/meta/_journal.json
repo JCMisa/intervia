@@ -29,6 +29,13 @@
       "when": 1737790927226,
       "tag": "0003_perfect_violations",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1737799540014,
+      "tag": "0004_salty_mantis",
+      "breakpoints": true
     }
   ]
 }
