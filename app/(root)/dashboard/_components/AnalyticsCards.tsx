@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import AnalyticsCardsSkeleton from "./AnalyticsCardsSkeleton";
+import { NumberTicker } from "@/components/ui/number-ticker";
 
 const AnalyticsCards = () => {
   const totalInterviews = 0;
@@ -26,9 +27,10 @@ const AnalyticsCards = () => {
               <div className="flex items-center">
                 <ListIcon className="h-6 w-6 text-primary" />
                 <div className="mx-3">
-                  <h3 className="text-lg font-medium text-gray-700 dark:text-gray-200">
-                    50
-                  </h3>
+                  <NumberTicker
+                    value={50}
+                    className="whitespace-pre-wrap text-lg font-medium tracking-tighter text-black dark:text-white"
+                  />
                   <p className="text-gray-500 dark:text-gray-400">
                     Total Mockup Interviews
                   </p>
@@ -75,7 +77,10 @@ const AnalyticsCards = () => {
             <div className="flex justify-between items-center px-6 py-4">
               <div className="flex flex-col gap-1">
                 <h3 className="text-4xl font-medium text-gray-700 dark:text-gray-200">
-                  50
+                  <NumberTicker
+                    value={50}
+                    className="whitespace-pre-wrap tracking-tighter text-black dark:text-white"
+                  />
                   <span className="text-sm text-gray-500 dark:text-gray-400">
                     /100
                   </span>

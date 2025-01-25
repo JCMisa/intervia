@@ -1,4 +1,12 @@
-import { varchar, uuid, text, pgTable, pgEnum } from "drizzle-orm/pg-core";
+import {
+  varchar,
+  uuid,
+  text,
+  pgTable,
+  pgEnum,
+  boolean,
+  integer,
+} from "drizzle-orm/pg-core";
 
 export const ROLE_ENUM = pgEnum("role", ["USER", "ADMIN"]);
 
@@ -8,7 +16,10 @@ export const users = pgTable("users", {
   firstName: varchar("firstName", { length: 255 }).notNull(),
   lastName: varchar("lastName", { length: 255 }).notNull(),
   email: text("email").notNull().unique(),
-  imageUrl: varchar("image_url"),
+  imageUrl: varchar("imageUrl"),
   role: ROLE_ENUM("role").default("USER"),
-  createdAt: varchar("created_at"),
+  isPro: boolean("isPro").default(false),
+  stripeConnectId: varchar("stripeConnectId"),
+  credits: integer("credits").default(0),
+  createdAt: varchar("createdAt"),
 });
