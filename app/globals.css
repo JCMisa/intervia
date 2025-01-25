@@ -82,3 +82,39 @@ body {
     background: #000000;
   }
 }
+
+/* From Uiverse.io by vk-uiux - light mode */
+.card-light {
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0.8rem;
+  background-color: #f0f0f0;
+}
+
+.card__skeleton-light {
+  background-image: linear-gradient(
+    90deg,
+    #ccc 0px,
+    rgb(229 229 229 / 90%) 40px,
+    #ccc 80px
+  );
+  background-size: 300%;
+  background-position: 100% 0;
+  border-radius: inherit;
+  animation: shimmer-light 1.5s infinite;
+}
+
+.card__title-light {
+  height: 15px;
+  margin-bottom: 15px;
+}
+
+.card__description-light {
+  height: 100px;
+}
+
+@keyframes shimmer-light {
+  to {
+    background-position: -100% 0;
+  }
+}
