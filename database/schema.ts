@@ -55,7 +55,7 @@ export const answers = pgTable("answers", {
   createdBy: varchar("createdBy"),
   question: varchar("question"),
   correctAnswer: text("correctAnswer"),
-  answer: text("answer"),
+  userAnswer: text("userAnswer"),
   feedback: text("feedback"),
   rating: varchar("rating"),
   createdAt: varchar("createdAt"),

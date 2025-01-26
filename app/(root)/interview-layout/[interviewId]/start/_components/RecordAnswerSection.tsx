@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { getCurrentUser } from "@/lib/actions/users";
 import { v4 as uuidv4 } from "uuid";
+import { saveAnswerToDb } from "@/lib/actions/answers";
 
 const RecordAnswerSection = ({
   mockInterviewQuestion,
@@ -112,8 +113,8 @@ const RecordAnswerSection = ({
         const data = await saveAnswerToDb(
           answerId,
           interviewData?.interviewId,
-          currentUser?.id,
-          currentUser?.email,
+          currentUser?.id as string,
+          currentUser?.email as string,
           mockInterviewQuestion[activeQuestionIndex]?.question,
           mockInterviewQuestion[activeQuestionIndex]?.answer,
           userAnswerTyped || userAnswerRecorded,
