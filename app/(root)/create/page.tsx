@@ -30,7 +30,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import { saveInterview } from "@/lib/actions/mockupInterview";
+import { saveInterview } from "@/lib/actions/interviews";
 import { useRouter } from "next/navigation";
 
 const CreateInterviewPage = () => {

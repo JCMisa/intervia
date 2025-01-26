@@ -67,3 +67,26 @@ export const getCurrentUser = async () => {
     return { success: false, error: "An error occurred while getting a user" };
   }
 };
+
+export const getUserCredits = async () => {
+  try {
+    const user = await getCurrentUser();
+    if (!user.success) return { success: false, error: "Unauthenticated" };
+
+    const data = await db
+      .select({ totalCredits: users.credits })
+      .from(users)
+      .where(eq(users.id, user.data?.id as string));
+    if (data.length > 0) return { success: true, data: data[0].totalCredits };
+    return {
+      success: false,
+      error: "User credits not found",
+    };
+  } catch (error) {
+    console.log("Get current user credits error: ", error);
+    return {
+      success: false,
+      error: "An error occurred while getting the user credits",
+    };
+  }
+};
