@@ -42,3 +42,21 @@ export const interviews = pgTable("interviews", {
   interviewData: jsonb("interviewData"),
   createdAt: varchar("createdAt"),
 });
+
+export const answers = pgTable("answers", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  answerId: varchar("answerId").notNull().unique(),
+  interviewId: varchar("interviewId")
+    .references(() => interviews.interviewId)
+    .notNull(),
+  userId: uuid("userId")
+    .references(() => users.id)
+    .notNull(),
+  createdBy: varchar("createdBy"),
+  question: varchar("question"),
+  correctAnswer: text("correctAnswer"),
+  answer: text("answer"),
+  feedback: text("feedback"),
+  rating: varchar("rating"),
+  createdAt: varchar("createdAt"),
+});

@@ -1,0 +1,1 @@
+ALTER TABLE "answers" ALTER COLUMN "interviewId" SET DATA TYPE varchar;

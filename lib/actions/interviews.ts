@@ -87,6 +87,26 @@ export const getUserInterviews = async () => {
   }
 };
 
+export const getInterviewByInterviewId = async (interviewId: string) => {
+  try {
+    const user = await getCurrentUser();
+    if (!user.success) return { success: false, error: "Unauthenticated" };
+
+    const data = await db
+      .select()
+      .from(interviews)
+      .where(eq(interviews.interviewId, interviewId));
+    if (data.length > 0) return { success: true, data: data[0] };
+    return { success: false, error: "No interview found with this id" };
+  } catch (error) {
+    console.log("Get interview by interviewId error: ", error);
+    return {
+      success: false,
+      error: "An error occurred while fetching interview",
+    };
+  }
+};
+
 export const getUserTotalInterviewsThisMonth = async () => {
   try {
     const user = await getCurrentUser();

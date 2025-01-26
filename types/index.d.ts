@@ -22,6 +22,22 @@ declare type FormDataType = {
   education: string;
 };
 
+declare type InterviewType = {
+  id: string;
+  interviewId: string;
+  userId: string;
+  createdBy: string;
+  jobTitle: string;
+  industry: string;
+  jobDescription: string;
+  skills: string;
+  experienceLevel: string;
+  keyCompetencies: string;
+  education: string;
+  interviewData: InterviewData;
+  createdAt: string;
+};
+
 declare type InterviewData = {
   jobTitle: string;
   industry: string;
@@ -38,4 +54,11 @@ declare type InterviewData = {
       options: string[];
     }
   ];
+};
+
+declare type QuestionListType = {
+  question: string;
+  answer: string;
+  explanation: string;
+  options: string[];
 };

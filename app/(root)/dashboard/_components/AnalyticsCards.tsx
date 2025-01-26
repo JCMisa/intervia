@@ -1,9 +1,9 @@
 import { Progress } from "@/components/ui/progress";
 import {
   ChartBarStackedIcon,
-  CreditCardIcon,
   ListIcon,
   PlusSquareIcon,
+  ZapIcon,
 } from "lucide-react";
 import React from "react";
 import AnalyticsCardsSkeleton from "./AnalyticsCardsSkeleton";
@@ -90,7 +90,7 @@ const AnalyticsCards = async () => {
                 </p>
               </div>
             </div>
-            <ChartBarStackedIcon className="h-6 w-6 text-yellow-500 absolute top-5 right-5" />
+            <ChartBarStackedIcon className="h-6 w-6 text-pink-500 absolute top-5 right-5" />
           </div>
 
           {/* Credits Left */}
@@ -113,7 +113,7 @@ const AnalyticsCards = async () => {
                 <p className="text-gray-500 dark:text-gray-400">Credits Left</p>
               </div>
             </div>
-            <CreditCardIcon className="h-6 w-6 text-blue-500 absolute top-5 right-5" />
+            <ZapIcon className="h-6 w-6 text-yellow-500 absolute top-5 right-5" />
           </div>
         </div>
       ) : (

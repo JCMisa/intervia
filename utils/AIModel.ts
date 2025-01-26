@@ -52,3 +52,26 @@ export const chatSession = model.startChat({
     },
   ],
 });
+
+export const feedbackSession = model.startChat({
+  generationConfig,
+  safetySettings,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Question: Describe your experience with talent acquisition and recruitment., User Answer: I was responsible for full-cycle recruitment for engineering and product roles. I developed and implemented a new sourcing strategy using LinkedIn Recruiter and targeted industry events, which resulted in a 30% increase in qualified candidates within the first quarter. I also streamlined the interview process by implementing structured interviews and candidate scorecards, reducing time-to-hire by 15%. I consistently exceeded hiring targets and built strong relationships with hiring managers across the organization. Depends on question and user answer for given question, please give us the rating for the answer, and a short feedback to the answer if it needs improvement or not, in just 3 to 5 sentences in JSON format with rating and feedback properties with their corresponding values.",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: '```json\n{\n  "rating": 4.5,\n  "feedback": "This is a strong answer showcasing quantifiable achievements.  Adding specific examples of the new sourcing strategy or structured interview elements would further strengthen it.  Mentioning any challenges overcome or lessons learned would also add depth. The answer is concise and effectively highlights key accomplishments."\n}\n```\n',
+        },
+      ],
+    },
+  ],
+});
