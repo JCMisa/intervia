@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/actions/users";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ZapIcon } from "lucide-react";
 
 const DashboardPage = async () => {
   const user = await getCurrentUser();
@@ -21,9 +22,22 @@ const DashboardPage = async () => {
           </p>
         </div>
 
-        <Link href={"/create"} className="w-full sm:min-w-32 sm:max-w-32">
-          <Button className="w-full sm:min-w-32 sm:max-w-32">+ Create</Button>
-        </Link>
+        {(currentUser?.isPro && (currentUser?.credits || 0) < 5) ||
+        (currentUser?.isPro && (currentUser?.credits || 0) >= 5) ||
+        (!currentUser?.isPro && (currentUser?.credits || 0) < 5) ? (
+          <Link href={"/create"} className="w-full sm:min-w-32 sm:max-w-32">
+            <Button className="w-full sm:min-w-32 sm:max-w-32">+ Create</Button>
+          </Link>
+        ) : (
+          <Link href={"/upgrade"} className="w-full sm:min-w-32 sm:max-w-32">
+            <Button
+              variant={"outline"}
+              className="w-full sm:min-w-32 sm:max-w-32"
+            >
+              <ZapIcon className="text-yellow-500" /> Upgrade
+            </Button>
+          </Link>
+        )}
       </div>
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-3">
         <div className="xl:col-span-3 flex flex-col gap-3 w-full">

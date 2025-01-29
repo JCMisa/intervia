@@ -28,6 +28,7 @@ const AnalyticsCards = async () => {
 
   const userCredits = await getUserCredits();
   const totalCredits = userCredits.data;
+  console.log(totalCredits);
 
   // const totalInterviews = null;
   // const mostUsedIndustry = "";
@@ -101,7 +102,7 @@ const AnalyticsCards = async () => {
                   <NumberTicker
                     value={
                       currentUser?.isPro
-                        ? 100 - ((totalCredits as number) ?? 0)
+                        ? (totalCredits as number) ?? 0
                         : 5 - ((totalCredits as number) ?? 0)
                     }
                     className="whitespace-pre-wrap tracking-tighter text-black dark:text-white"
@@ -110,7 +111,9 @@ const AnalyticsCards = async () => {
                     {currentUser?.isPro ? "/∞" : "/5"}
                   </span>
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400">Credits Left</p>
+                <p className="text-gray-500 dark:text-gray-400">
+                  {currentUser?.isPro ? "PRO Credits" : "Credits Left"}
+                </p>
               </div>
             </div>
             <ZapIcon className="h-6 w-6 text-yellow-500 absolute top-5 right-5" />
