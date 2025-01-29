@@ -66,6 +66,23 @@ export const saveInterview = async (
   }
 };
 
+export async function getAllInterviews() {
+  try {
+    const data = await db
+      .select()
+      .from(interviews)
+      .orderBy(desc(interviews.createdAt));
+
+    return { success: true, data: data };
+  } catch (error) {
+    console.error("Failed to fetch interviews:", error);
+    return {
+      success: false,
+      error: "Internal error while fetching interviews",
+    };
+  }
+}
+
 export const getUserInterviews = async () => {
   try {
     const user = await getCurrentUser();

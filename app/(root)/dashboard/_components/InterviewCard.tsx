@@ -49,9 +49,14 @@ const InterviewCard = async ({ interview }: { interview: InterviewType }) => {
         )}
 
         <div className="">
-          <h2 className="text-2xl font-bold mb-2">
-            {interview?.jobTitle || ""}
-          </h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-2xl font-bold mb-2">
+              {interview?.jobTitle || ""}
+            </h2>
+            <p className="text-sm text-primary">
+              {interviewCreatorData?.email === currentUser?.email && "owner"}
+            </p>
+          </div>
           <p className="text-gray-500 dark:text-gray-400 line-clamp-3">
             {interview?.jobDescription || ""}
           </p>

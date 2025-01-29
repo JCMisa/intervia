@@ -85,11 +85,11 @@ const StartWithoutOptionsPage = ({
       <InterviewHeader />
       <div className="p-20">
         <Link
-          href="/dashboard"
+          href={`/interview-layout/${interviewId}`}
           className="text-xs tex-gray-500 dark:text-gray-400 flex items-center gap-2"
         >
           <ArrowLeftIcon />
-          <p>Back to dashboard</p>
+          <p>Go Back</p>
         </Link>
         <div className="flex flex-col gap-10">
           {/* questions */}

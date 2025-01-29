@@ -5,7 +5,7 @@ import InterviewCard from "./InterviewCard";
 
 const InterviewsList = async () => {
   const userInterviews = await getUserInterviews();
-  if (!userInterviews.data) return <p>No Interviews Found.</p>;
+  if (!userInterviews.data) return <InterviewsListSkeleton />;
 
   return (
     <div>
