@@ -4,15 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Lightbulb, Volume1, Volume2 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import OptionCard from "./OptionCard";
 
 const QuestionsSection = ({
   mockInterviewQuestion,
   activeQuestionIndex,
+  interviewId,
+  showOptions = false,
 }: {
   mockInterviewQuestion: QuestionListType[];
   activeQuestionIndex: number;
+  interviewId: string;
+  showOptions: boolean;
 }) => {
   const [speaking, setSpeaking] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [userSelectedOption, setUserSelectedOption] = useState<string | null>(
+    null
+  );
 
   // this method will start your device speaker and read the text passed as parameter
   const textToSpeech = (text: string) => {
@@ -69,6 +78,36 @@ const QuestionsSection = ({
             </Button>
           )}
         </div>
+
+        {/* options */}
+        {showOptions && (
+          <div className="my-5 flex flex-col gap-3 mt-10">
+            <h2 className="text-sm text-gray-500 dark:text-gray-400">
+              Choose the best answer possible.
+            </h2>
+            {mockInterviewQuestion[activeQuestionIndex]?.options.map(
+              (option, index) => (
+                <div key={option}>
+                  <OptionCard
+                    question={
+                      mockInterviewQuestion[activeQuestionIndex]?.question
+                    }
+                    correctAnswer={
+                      mockInterviewQuestion[activeQuestionIndex]?.answer
+                    }
+                    option={option}
+                    index={index}
+                    interviewId={interviewId}
+                    selectedIndex={selectedIndex}
+                    setSelectedIndex={setSelectedIndex}
+                    userSelectedOption={userSelectedOption}
+                    setUserSelectedOption={setUserSelectedOption}
+                  />
+                </div>
+              )
+            )}
+          </div>
+        )}
 
         <div className="border rounded-lg p-5 bg-blue-100 mt-20">
           <h2 className="flex gap-2 items-center text-primary">

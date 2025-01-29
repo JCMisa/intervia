@@ -96,6 +96,8 @@ const StartWithoutOptionsPage = ({
           <QuestionsSection
             mockInterviewQuestion={mockInterviewQuestion as QuestionListType[]} // this is the array that consist of objects with question and answer properties
             activeQuestionIndex={activeQuestionIndex} // this is the index of the question that is active
+            interviewId={interviewId}
+            showOptions={false}
           />
 
           <div className="flex justify-end gap-6 my-3">
