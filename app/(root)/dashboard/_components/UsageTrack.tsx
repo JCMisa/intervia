@@ -31,7 +31,7 @@ const UsageTrack = () => {
         <SparklesText text="PRO PLAN" className="text-center text-lg" />
       ) : (
         <div className="m-5 w-full">
-          <div className="bg-dark-100 text-white rounded-lg p-3">
+          <div className="bg-light-100 dark:bg-dark-100 rounded-lg p-3 shadow-lg">
             <h2 className="font-medium">Credits</h2>
 
             <Progress value={(totalCredits / maxCredits) * 100} />

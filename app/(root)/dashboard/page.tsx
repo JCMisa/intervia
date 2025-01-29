@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ZapIcon } from "lucide-react";
+import InterviewsList from "./_components/InterviewsList";
 
 const DashboardPage = async () => {
   const user = await getCurrentUser();
@@ -39,14 +40,16 @@ const DashboardPage = async () => {
           </Link>
         )}
       </div>
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-3">
-        <div className="xl:col-span-3 flex flex-col gap-3 w-full">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-3 mb-44 md:mb-0">
+        <div className="xl:col-span-3 flex flex-col gap-5 w-full">
           {/* analytics cards */}
           <div className="w-full">
             <AnalyticsCards />
           </div>
           {/* Interviews List */}
-          <div>InterviewsList</div>
+          <div className="w-full">
+            <InterviewsList />
+          </div>
         </div>
 
         <div className="xl:col-span-1 bg-primary"></div>

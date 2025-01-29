@@ -90,3 +90,19 @@ export const getUserCredits = async () => {
     };
   }
 };
+
+export const getUserByInterviewUserId = async (userId: string) => {
+  try {
+    const data = await db.select().from(users).where(eq(users.id, userId));
+    if (data.length > 0) {
+      return { success: true, data: data[0] };
+    }
+    return { success: false, error: "Interview userId does not exist" };
+  } catch (error) {
+    console.log("Get user interview infor: ", error);
+    return {
+      success: false,
+      error: "An error occurred while getting the user interview info",
+    };
+  }
+};
