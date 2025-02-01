@@ -2,53 +2,31 @@
 
 import Link from "next/link";
 import InterviewHeader from "../../_components/InterviewHeader";
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getInterviewByInterviewId } from "@/lib/actions/interviews";
 import { Button } from "@/components/ui/button";
-import QuestionsSection from "../_components/QuestionsSection";
+import { v4 as uuidv4 } from "uuid";
+import { getCurrentUser } from "@/lib/actions/users";
+import moment from "moment";
+import { saveAnswerToDb } from "@/lib/actions/answers";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const StartWithOptionsPage = ({
   params,
 }: {
   params: Promise<{ interviewId: string }>;
 }) => {
+  const router = useRouter();
+
+  const [currentUser, setCurrentUser] = useState<UserType>();
   const [interviewId, setInterviewId] = useState("");
-  const [interview, setInterview] = useState<InterviewType>({
-    id: "string",
-    interviewId: "string",
-    userId: "string",
-    createdBy: "string",
-    jobTitle: "",
-    industry: "",
-    jobDescription: "",
-    skills: "",
-    experienceLevel: "",
-    keyCompetencies: "",
-    education: "",
-    interviewData: {
-      jobTitle: "",
-      industry: "",
-      jobDescription: "",
-      skills: "",
-      experienceLevel: "",
-      keyCompetencies: "",
-      education: "",
-      questionsList: [
-        {
-          question: "",
-          answer: "",
-          explanation: "",
-          options: [""],
-        },
-      ],
-    },
-    createdAt: "",
-  });
-  const [mockInterviewQuestion, setMockInterviewQuestion] = useState<
+  const [mockInterviewQuestions, setMockInterviewQuestions] = useState<
     QuestionListType[] | null
-  >();
-  const [activeQuestionIndex, setactiveQuestionIndex] = useState(0);
+  >(null);
+  const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const extractParams = async () => {
@@ -65,8 +43,7 @@ const StartWithOptionsPage = ({
           const result = await getInterviewByInterviewId(interviewId);
           if (result.success) {
             const fetchedInterview = result.data as InterviewType;
-            setInterview(fetchedInterview);
-            setMockInterviewQuestion(
+            setMockInterviewQuestions(
               fetchedInterview.interviewData.questionsList || null
             );
           }
@@ -78,6 +55,74 @@ const StartWithOptionsPage = ({
 
     getInterviewData();
   }, [interviewId]);
+
+  useEffect(() => {
+    const getCurrentUserEffect = async () => {
+      const user = await getCurrentUser();
+      if (user.success) setCurrentUser(user.data as UserType);
+    };
+
+    getCurrentUserEffect();
+  }, []);
+
+  const handleClickOption = (questionIndex: number, option: string) => {
+    setUserAnswers((prev) => ({
+      ...prev,
+      [questionIndex]: option,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    if (!mockInterviewQuestions) return;
+
+    try {
+      // Create array of save promises
+      const savePromises = mockInterviewQuestions.map(
+        async (question, index) => {
+          const userAnswer = userAnswers[index] || "";
+          const answerId = uuidv4();
+
+          await saveAnswerToDb(
+            answerId,
+            interviewId,
+            currentUser?.id as string,
+            currentUser?.email as string,
+            question.question,
+            question.answer,
+            userAnswer,
+            question.explanation,
+            "0",
+            moment().format("MM-DD-YYYY")
+          );
+
+          return index; // Return the index of completed question
+        }
+      );
+
+      // Wait for all promises to resolve
+      const completedIndexes = await Promise.all(savePromises);
+      const count = completedIndexes.length;
+
+      toast(
+        <p className="text-sm font-bold text-green-500">
+          {`Successfully saved ${count}/${mockInterviewQuestions.length} answers`}
+        </p>
+      );
+
+      router.push(`/interview-layout/${interviewId}/feedback`);
+    } catch (error) {
+      console.error("Error saving results:", error);
+      toast(
+        <p className="text-sm font-bold text-red-500">
+          Error saving answers -{" "}
+          {error instanceof Error ? error.message : "Unknown error"}
+        </p>
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -92,44 +137,47 @@ const StartWithOptionsPage = ({
           <p>Go Back</p>
         </Link>
 
-        <div className="flex flex-col gap-10">
-          {/* questions */}
-          <QuestionsSection
-            mockInterviewQuestion={mockInterviewQuestion as QuestionListType[]} // this is the array that consist of objects with question and answer properties
-            activeQuestionIndex={activeQuestionIndex} // this is the index of the question that is active
-            interviewId={interviewId}
-            showOptions={true}
-          />
+        <div className="flex flex-col gap-10 mt-10">
+          {mockInterviewQuestions?.map((question, questionIndex) => (
+            <div key={questionIndex} className="flex flex-col gap-3">
+              {/* question */}
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-primary font-bold text-sm p-3 w-10 h-10 text-center">
+                  {questionIndex + 1}
+                </div>
+                <h2 className="text-lg font-bold tracking-wide">
+                  {question.question}
+                </h2>
+              </div>
 
-          <div className="flex justify-end gap-6 my-3">
-            {activeQuestionIndex > 0 && (
-              <Button
-                onClick={() => setactiveQuestionIndex(activeQuestionIndex - 1)} // decrement the index of the active question
-                variant="outline"
-              >
-                Previous Question
-              </Button>
-            )}
-            {mockInterviewQuestion &&
-              activeQuestionIndex != mockInterviewQuestion.length - 1 && (
+              {question.options.map((option, optionIndex) => (
                 <Button
-                  onClick={() =>
-                    setactiveQuestionIndex(activeQuestionIndex + 1)
-                  } // increment the index of the active question
+                  key={optionIndex}
+                  className="flex items-center justify-start h-10 overflow-auto card-scroll-none"
+                  variant={
+                    userAnswers[questionIndex] === option
+                      ? "default"
+                      : "outline"
+                  }
+                  onClick={() => handleClickOption(questionIndex, option)}
                 >
-                  Next Question
+                  {option}
                 </Button>
-              )}
-            {mockInterviewQuestion &&
-              activeQuestionIndex == mockInterviewQuestion.length - 1 && (
-                <Link
-                  href={`/interview-layout/${interview?.interviewId}/feedback`}
-                >
-                  <Button variant={"destructive"}>End Interview</Button>
-                </Link>
-              )}
-          </div>
+              ))}
+            </div>
+          ))}
         </div>
+        <Button
+          className="float-end my-10"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? (
+            <LoaderCircle className="w-5 h-5 animate-spin" />
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </div>
     </div>
   );

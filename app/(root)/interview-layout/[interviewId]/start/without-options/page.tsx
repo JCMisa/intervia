@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import InterviewHeader from "../../_components/InterviewHeader";
 import { ArrowLeftIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const StartWithoutOptionsPage = ({
   params,
 }: {
   params: Promise<{ interviewId: string }>;
 }) => {
+  const router = useRouter();
+
   const [interviewId, setInterviewId] = useState("");
   const [interview, setInterview] = useState<InterviewType>({
     id: "string",
@@ -96,8 +99,6 @@ const StartWithoutOptionsPage = ({
           <QuestionsSection
             mockInterviewQuestion={mockInterviewQuestion as QuestionListType[]} // this is the array that consist of objects with question and answer properties
             activeQuestionIndex={activeQuestionIndex} // this is the index of the question that is active
-            interviewId={interviewId}
-            showOptions={false}
           />
 
           <div className="flex justify-end gap-6 my-3">
@@ -124,7 +125,16 @@ const StartWithoutOptionsPage = ({
                 <Link
                   href={`/interview-layout/${interview?.interviewId}/feedback`}
                 >
-                  <Button variant={"destructive"}>End Interview</Button>
+                  <Button
+                    variant={"destructive"}
+                    onClick={() =>
+                      router.push(
+                        `/interview-layout/${interview.interviewId}/feedback`
+                      )
+                    }
+                  >
+                    End Interview
+                  </Button>
                 </Link>
               )}
           </div>

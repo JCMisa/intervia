@@ -96,6 +96,19 @@ body {
   background: #7ac142;
 }
 
+.card-scroll-none::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.card-scroll-none::-webkit-scrollbar-track {
+  display: none;
+}
+
+.card-scroll-none::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
 /* From Uiverse.io by vk-uiux - light mode */
 .card-light {
   padding: 1rem;
