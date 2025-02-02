@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/custom/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import ModeToggle from "@/components/custom/ModeToggle";
+import { ConfettiProvider } from "@/components/custom/confetti-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({
           >
             {children}
             <Toaster />
+            <ConfettiProvider />
             <div className="fixed bottom-5 right-5">
               <ModeToggle />
             </div>

@@ -62,3 +62,17 @@ declare type QuestionListType = {
   explanation: string;
   options: string[];
 };
+
+declare type UserAnswerType = {
+  id: string;
+  answerId: string;
+  interviewId: string;
+  userId: string;
+  createdBy: string;
+  question: string;
+  correctAnswer: string;
+  userAnswer: string;
+  feedback: string;
+  rating: string;
+  createdAt: string;
+};
